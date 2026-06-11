@@ -1,38 +1,41 @@
-# Voice-Activated Complaint Filing System
+# Voice Bot — Voice-Activated Complaint Filing
 
-## Overview
-This project is a voice-activated complaint filing system built using Python, Flask, and various libraries for speech recognition and text-to-speech conversion. The system allows users to file complaints verbally, validates input, stores data in a SQLite database, and provides responses both through voice and text.
+A voice-based complaint management system. A user files a complaint by speaking;
+the bot captures the speech, runs an interactive dialogue to collect the
+details, stores the complaint, generates a PDF report, and replies with
+synthesized voice.
 
-## Features
-- Voice recognition for user input using SpeechRecognition library.
-- Text-to-speech conversion for system responses using gTTS (Google Text-to-Speech) library.
-- Flask web framework for handling HTTP requests and rendering HTML templates.
-- SQLite database for storing complaint data with basic CRUD operations.
+## What it does
+- **Speech in** — captures the caller's voice and transcribes it (speech-to-text)
+- **Interactive dialogue** — asks for the details it needs (dealer, vehicle, issue)
+- **Stores the complaint** — saves structured records in SQLite
+- **PDF report** — generates a complaint document automatically
+- **Speech out** — responds back with synthesized voice (text-to-speech)
+- Also handles complaint-number lookup, warranty queries, and contact info
 
-## Prerequisites
-- Python 3.x installed on your system.
-- Required Python packages can be installed using pip:
-pip install flask, gTTS, SpeechRecognition, pydub, playsound
-- Ensure ffmpeg and ffprobe are installed and accessible in your system path for audio processing (required by pydub).
+## Tech
+Python · Flask · SpeechRecognition · gTTS (text-to-speech) · SQLite · pydub · ReportLab/PDF
 
-## Setting Up
-1. **Clone the repository:**
- git clone https://github.com/uttam-bn/voice_bot.git
- cd voice_bot
+## Run it
+```bash
+pip install -r requirements.txt
+python app.py
+```
+You'll need `ffmpeg` installed for audio processing.
 
-- pip install -r requirements.txt
-- python app.py
+## How it works
+```
+caller speech ──▶ speech-to-text ──▶ dialogue manager ──▶ SQLite
+                                            │
+                          PDF report ◀──────┘
+                                            │
+                  spoken reply ◀── text-to-speech
+```
 
+## Notes
+This is a working proof of concept. The natural next step is to swap the speech
+layer for Indian-language models (e.g. Sarvam Saarika for STT and Bulbul for
+TTS) and connect a phone number for live calls.
 
-## Usage
-
-- Upon running the application, you will hear "Thank you for calling. I am Laami. How can I help you?".
-- Speak "register a complaint" or "file a complaint" to begin filing a complaint. Follow the voice prompts to provide details such as dealer name, vehicle name, etc.
-- If asked for a complaint number, provide the complaint number to retrieve details.
-- To inquire about the warranty period, ask about warranty or warranty claim.
-- Emails related queries will be answered with "infotainment@gmail.com".
-- Complaint data and details will be saved in a SQLite database named complaints.db.
-- A text file complaints.txt will be generated containing the number of complaints filed in pdf format.
-- Voice recordings of each interaction will be saved as response.mp3 for reference.
-
-
+## License
+MIT
